@@ -1,0 +1,93 @@
+{
+  "personal": {
+    "name": "Dharanesh Kumar",
+    "role": "Web Developer & Cyber Security Enthusiast",
+    "tagline": "I build secure, decent, and professional web experiences. Enthusiastic about app development and cybersecurity.",
+    "email": "info.dharaneshk@gmail.com",
+    "phone": "+91 9342992454",
+    "location": "Karur, Tamil Nadu - 639004",
+    "website": "dharaneshkumar.portfolio",
+    "social": {
+      "github": "https://github.com/dharanesh-official",
+      "linkedin": "https://linkedin.com/in/dharanesh-kumar"
+    }
+  },
+  "education": [
+    {
+      "degree": "M.Sc. Software Systems (Integrated)",
+      "period": "2024 – Present",
+      "school": "Kongu Engineering College, Perundurai",
+      "details": "Graduation: 2029"
+    },
+    {
+      "degree": "Higher Secondary Certificate (HSC)",
+      "period": "Completed 2024",
+      "school": "Bharani Park Matriculation Higher Secondary School, Karur",
+      "details": "Stream: Computer Science"
+    },
+    {
+      "degree": "Secondary School Leaving Certificate (SSLC)",
+      "period": "Completed 2022",
+      "school": "Bharani Park Matriculation Higher Secondary School, Karur",
+      "details": ""
+    }
+  ],
+  "skills": [
+    "C/C++",
+    "Java",
+    "Python",
+    "HTML",
+    "CSS",
+    "Bootstrap",
+    "TailwindCSS",
+    "React.js",
+    "Node.js",
+    "Figma",
+    "Adobe Photoshop"
+  ],
+  "achievements": [
+    "Third Prize on Internal Ideathon (Kongu Engineering College, 2024)",
+    "Third Prize on Hackwave 2.0 (Bannai Amman Institute of Technology, 2024)",
+    "Third Prize on Internal Ideathon (Kongu Engineering College, 2025)",
+    "Third Prize on Internal Hackwave 3.0 (Kongu Engineering College, 2024)"
+  ],
+  "projects": [
+    {
+      "title": "College Event Management System",
+      "description": "Developed a system featuring dynamic form rendering for seamless group registration. Integrated automated fee calculation to generate custom payment QR codes, ensuring accurate billing and eliminating manual errors.",
+      "tags": [
+        "Web",
+        "Automation",
+        "Forms"
+      ]
+    },
+    {
+      "title": "HR Management & Payroll Automation",
+      "description": "Built a web application to streamline HR operations, integrating leave management directly with payroll systems. The application eliminates data redundancy and calculation errors by automatically synchronizing approved leave records.",
+      "tags": [
+        "Web App",
+        "HR",
+        "Payroll"
+      ]
+    },
+    {
+      "title": "Hostel Management Web App",
+      "description": "Engineered a responsive hostel booking platform featuring secure authentication, RBAC, and dynamic search tools. Optimized backend logic to handle real-time inventory management and seamless transaction processing.",
+      "tags": [
+        "RBAC",
+        "Authentication",
+        "Inventory"
+      ]
+    },
+    {
+      "title": "Voice to Sign Language Translator",
+      "description": "Developed a full-stack web application using Python and Flask that translates spoken English into continuous Sign Language video animations in real-time, leveraging NLP for text analysis.",
+      "tags": [
+        "Python",
+        "Flask",
+        "NLP",
+        "Accessibility"
+      ]
+    }
+  ]
+}
