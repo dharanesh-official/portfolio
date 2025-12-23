@@ -1,5 +1,8 @@
 import { getPortfolioData } from "./lib/data";
 import HomeClient from "./components/HomeClient";
+
+export const dynamic = 'force-dynamic';
+
 import AboutClient from "./components/AboutClient";
 import ProjectsClient from "./components/ProjectsClient";
 import ContactClient from "./components/ContactClient";

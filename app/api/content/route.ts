@@ -3,6 +3,9 @@ import dbConnect from '@/lib/db';
 import { Portfolio } from '@/lib/models';
 import contentData from '@/app/data/content.json'; // Fallback/Seed data
 
+export const dynamic = 'force-dynamic';
+
+
 export async function GET() {
     await dbConnect();
 
