@@ -59,7 +59,7 @@ export default function HomeClient({ data }: { data: any }) {
                     <a href={personal.social.github} target="_blank" className="hover:text-slate-900 transition-colors transform hover:scale-110 duration-200">
                         <Github className="w-8 h-8" />
                     </a>
-                    <a href={personal.social.linkedin} target="_blank" className="hover:text-blue-700 transition-colors transform hover:scale-110 duration-200">
+                    <a href={'https://www.linkedin.com/in/dharanesh-kumar-72269231b/'} target="_blank" className="hover:text-blue-700 transition-colors transform hover:scale-110 duration-200">
                         <Linkedin className="w-8 h-8" />
                     </a>
                     <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${personal.email}`} target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors transform hover:scale-110 duration-200">
