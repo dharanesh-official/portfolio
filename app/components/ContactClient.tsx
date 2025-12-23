@@ -69,10 +69,10 @@ export default function ContactClient({ data }: { data: any }) {
                     </div>
 
                     <div className="pt-8 border-t border-slate-100 flex gap-4">
-                        <a href={personal.social.github} className="p-3 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all">
+                        <a href={'https://github.com/dharanesh-official'} className="p-3 bg-slate-50 rounded-full text-slate-900 hover:bg-slate-900 hover:text-white transition-all">
                             <Github className="w-5 h-5" />
                         </a>
-                        <a href={personal.social.linkedin} className="p-3 bg-slate-50 rounded-full text-blue-700 hover:bg-blue-700 hover:text-white transition-all">
+                        <a href={'https://www.linkedin.com/in/dharanesh-kumar-72269231b/'} className="p-3 bg-slate-50 rounded-full text-blue-700 hover:bg-blue-700 hover:text-white transition-all">
                             <Linkedin className="w-5 h-5" />
                         </a>
                     </div>
