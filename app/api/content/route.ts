@@ -41,12 +41,18 @@ export async function POST(request: Request) {
         // If I save 'newData', I must ensure the image field is preserved if I want to update other fields but keep image.
 
         const currentParam = await Portfolio.findOne();
-        if (currentParam && currentParam.personal.image && !newData.personal.image) {
-            // If the incoming data doesn't have an image but the DB does, keep the DB one.
-            // This depends on how the frontend sends data. 
-            // AdminPage uses 'data' state. If 'image' is part of 'personal', it will be in 'newData'.
-            // If the 'image' field is large, it might be heavy to send back and forth.
-            // But for < 4MB it's okay.
+
+        // Remove immutable/system fields that shouldn't be updated manually
+        // This fixes "Mod on _id not allowed" errors when sending back a full document
+        if (newData._id) delete newData._id;
+        if (newData.__v) delete newData.__v;
+        if (newData.createdAt) delete newData.createdAt;
+        if (newData.updatedAt) delete newData.updatedAt;
+
+        if (currentParam && currentParam.personal && currentParam.personal.image && (!newData.personal || !newData.personal.image)) {
+            // Ensure personal object exists in newData if we are patching it
+            if (!newData.personal) newData.personal = {};
+            // Preserve existing image if not provided in update
             newData.personal.image = currentParam.personal.image;
         }
 

@@ -397,9 +397,9 @@ export default function AdminPage() {
                                         <div key={i} className="p-4 bg-slate-50 rounded-lg border border-slate-200 relative group">
                                             <button onClick={() => setData({ ...data, education: data.education.filter((_, idx) => idx !== i) })} className="absolute top-2 right-2 p-1 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
                                             <div className="grid gap-2">
-                                                <input value={edu.degree} onChange={(e) => { const newEdu = [...data.education]; newEdu[i].degree = e.target.value; setData({ ...data, education: newEdu }); }} className="font-bold bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none text-slate-900 pb-1" placeholder="Degree Name" />
-                                                <input value={edu.period} onChange={(e) => { const newEdu = [...data.education]; newEdu[i].period = e.target.value; setData({ ...data, education: newEdu }); }} className="text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none text-blue-600" placeholder="Period (e.g., 2020-2024)" />
-                                                <input value={edu.school} onChange={(e) => { const newEdu = [...data.education]; newEdu[i].school = e.target.value; setData({ ...data, education: newEdu }); }} className="text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none text-slate-600" placeholder="School Name" />
+                                                <input value={edu.degree} onChange={(e) => { const newEdu = data.education.map((item, idx) => idx === i ? { ...item, degree: e.target.value } : item); setData({ ...data, education: newEdu }); }} className="font-bold bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none text-slate-900 pb-1" placeholder="Degree Name" />
+                                                <input value={edu.period} onChange={(e) => { const newEdu = data.education.map((item, idx) => idx === i ? { ...item, period: e.target.value } : item); setData({ ...data, education: newEdu }); }} className="text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none text-blue-600" placeholder="Period (e.g., 2020-2024)" />
+                                                <input value={edu.school} onChange={(e) => { const newEdu = data.education.map((item, idx) => idx === i ? { ...item, school: e.target.value } : item); setData({ ...data, education: newEdu }); }} className="text-sm bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none text-slate-600" placeholder="School Name" />
                                             </div>
                                         </div>
                                     ))}
@@ -424,7 +424,7 @@ export default function AdminPage() {
                                 <div className="space-y-2">
                                     {data.achievements.map((ach, i) => (
                                         <div key={i} className="flex gap-2">
-                                            <input value={ach} onChange={(e) => { const newAch = [...data.achievements]; newAch[i] = e.target.value; setData({ ...data, achievements: newAch }); }} className="w-full p-2 border rounded-lg text-slate-900 bg-slate-50" />
+                                            <input value={ach} onChange={(e) => { const newAch = data.achievements.map((item, idx) => idx === i ? e.target.value : item); setData({ ...data, achievements: newAch }); }} className="w-full p-2 border rounded-lg text-slate-900 bg-slate-50" />
                                             <button onClick={() => setData({ ...data, achievements: data.achievements.filter((_, idx) => idx !== i) })} className="text-red-500 hover:bg-red-50 p-2 rounded"><Trash2 className="w-4 h-4" /></button>
                                         </div>
                                     ))}
@@ -451,7 +451,7 @@ export default function AdminPage() {
                                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Title</label>
                                                 <input
                                                     value={project.title}
-                                                    onChange={(e) => { const newProjs = [...data.projects]; newProjs[i].title = e.target.value; setData({ ...data, projects: newProjs }); }}
+                                                    onChange={(e) => { const newProjs = data.projects.map((p, idx) => idx === i ? { ...p, title: e.target.value } : p); setData({ ...data, projects: newProjs }); }}
                                                     className="w-full text-lg font-bold text-slate-900 bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none"
                                                 />
                                             </div>
@@ -460,7 +460,7 @@ export default function AdminPage() {
                                                 <textarea
                                                     rows={2}
                                                     value={project.description}
-                                                    onChange={(e) => { const newProjs = [...data.projects]; newProjs[i].description = e.target.value; setData({ ...data, projects: newProjs }); }}
+                                                    onChange={(e) => { const newProjs = data.projects.map((p, idx) => idx === i ? { ...p, description: e.target.value } : p); setData({ ...data, projects: newProjs }); }}
                                                     className="w-full text-sm text-slate-600 bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none"
                                                 />
                                             </div>
@@ -468,7 +468,7 @@ export default function AdminPage() {
                                                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tags (comma separated)</label>
                                                 <input
                                                     value={project.tags.join(", ")}
-                                                    onChange={(e) => { const newProjs = [...data.projects]; newProjs[i].tags = e.target.value.split(',').map(t => t.trim()).filter(t => t); setData({ ...data, projects: newProjs }); }}
+                                                    onChange={(e) => { const newProjs = data.projects.map((p, idx) => idx === i ? { ...p, tags: e.target.value.split(',').map(t => t.trim()).filter(t => t) } : p); setData({ ...data, projects: newProjs }); }}
                                                     className="w-full text-sm text-blue-600 bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none"
                                                 />
                                             </div>
