@@ -141,10 +141,16 @@ export default function AdminPage() {
     const handleSave = async () => {
         if (!data) return;
         try {
+            // Create a payload copy without the heavy image data
+            // The image is handled separately via the /api/upload endpoint
+            // This prevents 413 Payload Too Large errors
+            const payload = { ...data, personal: { ...data.personal } };
+            delete payload.personal.image;
+
             const res = await fetch("/api/content", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
+                body: JSON.stringify(payload),
             });
             if (res.ok) {
                 alert("Content saved successfully!");
