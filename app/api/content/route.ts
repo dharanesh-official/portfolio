@@ -55,6 +55,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error("Save Error:", error);
-        return NextResponse.json({ error: "Failed to save data" }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to save data" }, { status: 500 });
     }
 }

@@ -150,7 +150,9 @@ export default function AdminPage() {
                 alert("Content saved successfully!");
                 router.push("/");
             } else {
-                alert("Failed to save content.");
+                const err = await res.json();
+                console.error("Save failed:", err);
+                alert(`Failed to save content: ${err.error || 'Unknown error'}`);
             }
         } catch (error) {
             alert("Error saving data.");
