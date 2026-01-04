@@ -85,7 +85,7 @@ export default function ContactClient({ data }: { data: any }) {
                     transition={{ delay: 0.2 }}
                     className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100"
                 >
-                    <form action={`https://formsubmit.co/${personal.email}`} method="POST" className="space-y-6">
+                    <form action="https://formsubmit.co/info.dharaneshk@gmail.com" method="POST" className="space-y-6">
                         {/* <input type="hidden" name="_next" value="http://localhost:3000/thanks" /> - Removed for better compatibility across envs */}
                         <input type="hidden" name="_captcha" value="false" />
 

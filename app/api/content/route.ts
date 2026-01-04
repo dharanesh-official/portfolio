@@ -10,12 +10,22 @@ export async function GET() {
     await dbConnect();
 
     try {
-        let data = await Portfolio.findOne();
+        // Use lean() to get a plain JS object we can modify
+        let data = await Portfolio.findOne().lean();
 
         if (!data) {
             // Seed if empty
             console.log("No data found in DB, seeding from local JSON...");
             data = await Portfolio.create(contentData);
+            // Re-fetch as lean or just use the created doc converted to object
+            if (data && typeof data.toObject === 'function') data = data.toObject();
+        }
+
+        // Optimize: Don't send the heavy resume base64 string to the client
+        // The client only needs to know if it exists to show the button
+        if (data && data.personal) {
+            data.personal.hasResume = !!data.personal.resume;
+            delete data.personal.resume;
         }
 
         return NextResponse.json(data);
@@ -49,11 +59,20 @@ export async function POST(request: Request) {
         if (newData.createdAt) delete newData.createdAt;
         if (newData.updatedAt) delete newData.updatedAt;
 
-        if (currentParam && currentParam.personal && currentParam.personal.image && (!newData.personal || !newData.personal.image)) {
+        if (currentParam && currentParam.personal) {
             // Ensure personal object exists in newData if we are patching it
             if (!newData.personal) newData.personal = {};
+
             // Preserve existing image if not provided in update
-            newData.personal.image = currentParam.personal.image;
+            if (currentParam.personal.image && !newData.personal.image) {
+                newData.personal.image = currentParam.personal.image;
+            }
+
+            // Preserve existing resume if not provided in update
+            // Frontend explicitly removes resume to avoid payload size limits, so we MUST restore it from DB
+            if (currentParam.personal.resume && !newData.personal.resume) {
+                newData.personal.resume = currentParam.personal.resume;
+            }
         }
 
         await Portfolio.findOneAndUpdate({}, newData, { upsert: true, new: true });

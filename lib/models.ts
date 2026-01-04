@@ -15,6 +15,7 @@ const PortfolioSchema = new Schema({
         location: String,
         website: String,
         image: String, // Base64 string for the profile image
+        resume: String, // Base64 string for the resume PDF
         social: {
             github: String,
             linkedin: String

@@ -23,10 +23,11 @@ export default function HomeClient({ data }: { data: any }) {
                 {/* Profile Photo Area */}
                 <div className="relative w-32 h-32 md:w-40 md:h-40 mb-8 rounded-full overflow-hidden border-4 border-white shadow-2xl ring-1 ring-slate-100">
                     <Image
-                        src={personal.image || "/hero-image.png"}
+                        src={personal.hasImage ? "/api/image" : "/hero-image.png"}
                         alt={personal.name}
                         fill
                         className="object-cover"
+                        priority // Prioritize loading this image
                     />
                 </div>
 
@@ -53,6 +54,15 @@ export default function HomeClient({ data }: { data: any }) {
                     >
                         Contact Me
                     </Link>
+                    {personal.hasResume && (
+                        <a
+                            href="/api/resume"
+                            className="flex items-center gap-2 bg-slate-100 text-slate-900 border border-slate-200 px-8 py-4 rounded-full font-medium hover:bg-slate-200 transition-all text-lg"
+                            download
+                        >
+                            Download Resume
+                        </a>
+                    )}
                 </div>
 
                 <div className="flex gap-8 text-slate-400">

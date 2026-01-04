@@ -19,6 +19,8 @@ type ContentData = {
         location: string;
         website: string;
         image?: string;
+        resume?: string; // Base64 string for the resume PDF
+        hasResume?: boolean; // Flag to check if resume exists
         social: { github: string; linkedin: string };
     };
     education: Education[];
@@ -44,6 +46,8 @@ export default function AdminPage() {
     const [admins, setAdmins] = useState<AdminUser[]>([]);
     const [newAdminUser, setNewAdminUser] = useState("");
     const [newAdminPass, setNewAdminPass] = useState("");
+
+    const [uploadingResume, setUploadingResume] = useState(false);
 
     const router = useRouter();
 
@@ -141,11 +145,13 @@ export default function AdminPage() {
     const handleSave = async () => {
         if (!data) return;
         try {
-            // Create a payload copy without the heavy image data
+            // Create a payload copy without the heavy image/resume data
             // The image is handled separately via the /api/upload endpoint
+            // The resume is handled separately via the /api/upload-resume endpoint
             // This prevents 413 Payload Too Large errors
             const payload = { ...data, personal: { ...data.personal } };
             delete payload.personal.image;
+            delete payload.personal.resume;
 
             const res = await fetch("/api/content", {
                 method: "POST",
@@ -223,6 +229,43 @@ export default function AdminPage() {
             } catch (e) {
                 console.error(e);
                 alert("Error cropping image.");
+            }
+        }
+    };
+
+    const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+            if (file.type !== "application/pdf") {
+                alert("Please upload a PDF file.");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert("File size exceeds 5MB limit.");
+                return;
+            }
+
+            setUploadingResume(true);
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch("/api/upload-resume", { method: "POST", body: formData });
+                if (res.ok) {
+                    alert("Resume uploaded successfully!");
+                    // Update local state to show uploaded status without full reload
+                    if (data) {
+                        setData({ ...data, personal: { ...data.personal, hasResume: true, resume: "uploaded" } });
+                    }
+                } else {
+                    const err = await res.json();
+                    alert(err.error || "Failed to upload resume.");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error uploading resume.");
+            } finally {
+                setUploadingResume(false);
             }
         }
     };
@@ -326,26 +369,42 @@ export default function AdminPage() {
                                 Profile Details
                             </h2>
                             <div className="mb-8 p-6 bg-slate-50 rounded-xl border border-slate-200 flex flex-col items-center">
-                                <label className="text-slate-700 font-medium mb-4">Profile Photo</label>
-                                <div className="flex gap-4 items-center">
-                                    <label className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
-                                        <Upload className="w-4 h-4" /> Upload New
-                                        <input type="file" accept="image/*" onChange={onFileChange} className="hidden" />
-                                    </label>
+                                <div className="mb-8 p-6 bg-slate-50 rounded-xl border border-slate-200 flex flex-col md:flex-row gap-8 items-center justify-between">
+                                    <div className="flex flex-col items-center gap-4">
+                                        <label className="text-slate-700 font-medium">Profile Photo</label>
+                                        <div className="flex gap-4 items-center">
+                                            <label className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+                                                <Upload className="w-4 h-4" /> Upload New
+                                                <input type="file" accept="image/*" onChange={onFileChange} className="hidden" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="h-px md:h-20 w-full md:w-px bg-slate-300"></div>
+                                    <div className="flex flex-col items-center gap-4">
+                                        <label className="text-slate-700 font-medium">Resume (PDF)</label>
+                                        <div className="flex gap-4 items-center">
+                                            <label className={`cursor-pointer flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors shadow-sm ${uploadingResume ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                                {uploadingResume ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-slate-700"></div> : <Upload className="w-4 h-4" />}
+                                                {uploadingResume ? "Uploading..." : "Upload PDF"}
+                                                <input type="file" accept="application/pdf" onChange={handleResumeUpload} className="hidden" disabled={uploadingResume} />
+                                            </label>
+                                            {data.personal.hasResume && !uploadingResume && <span className="text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded">Resume Uploaded</span>}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-600 mb-1">Full Name</label>
-                                    <input value={data.personal.name} onChange={(e) => updatePersonal('name', e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-slate-50 focus:bg-white transition-colors" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-600 mb-1">Role</label>
-                                    <input value={data.personal.role} onChange={(e) => updatePersonal('role', e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-slate-50 focus:bg-white transition-colors" />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-slate-600 mb-1">Tagline</label>
-                                    <textarea rows={2} value={data.personal.tagline} onChange={(e) => updatePersonal('tagline', e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-slate-50 focus:bg-white transition-colors" />
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-600 mb-1">Full Name</label>
+                                        <input value={data.personal.name} onChange={(e) => updatePersonal('name', e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-slate-50 focus:bg-white transition-colors" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-600 mb-1">Role</label>
+                                        <input value={data.personal.role} onChange={(e) => updatePersonal('role', e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-slate-50 focus:bg-white transition-colors" />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-slate-600 mb-1">Tagline</label>
+                                        <textarea rows={2} value={data.personal.tagline} onChange={(e) => updatePersonal('tagline', e.target.value)} className="w-full p-3 border rounded-lg text-slate-900 bg-slate-50 focus:bg-white transition-colors" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
