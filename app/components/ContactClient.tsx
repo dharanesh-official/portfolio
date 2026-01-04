@@ -92,22 +92,22 @@ export default function ContactClient({ data }: { data: any }) {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-slate-700">First Name</label>
-                                <input type="text" name="firstName" required className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="John" />
+                                <input type="text" name="firstName" required className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="Karthik" />
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-slate-700">Last Name</label>
-                                <input type="text" name="lastName" required className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="Doe" />
+                                <input type="text" name="lastName" required className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="S" />
                             </div>
                         </div>
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-700">Email Address</label>
-                            <input type="email" name="email" required className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="john@example.com" />
+                            <input type="email" name="email" required className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="yourmail@example.com" />
                         </div>
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-700">Message</label>
-                            <textarea name="message" required rows={4} className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="Tell me about your project..."></textarea>
+                            <textarea name="message" required rows={4} className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="The Purpose of contacting..."></textarea>
                         </div>
 
                         <button type="submit" className="w-full py-4 bg-slate-900 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
