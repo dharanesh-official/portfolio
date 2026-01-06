@@ -1,10 +1,45 @@
 "use client";
 
+import { useState } from "react";
+
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, Github, Linkedin, Globe } from "lucide-react";
 
 export default function ContactClient({ data }: { data: any }) {
     const { personal } = data;
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [status, setStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setStatus({ type: null, message: '' });
+
+        const formData = new FormData(e.currentTarget);
+        const submitData = {
+            firstName: formData.get('firstName'),
+            lastName: formData.get('lastName'),
+            email: formData.get('email'),
+            message: formData.get('message'),
+        };
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(submitData),
+            });
+
+            if (!response.ok) throw new Error('Failed to send message');
+
+            setStatus({ type: 'success', message: 'Message sent successfully! I will get back to you soon.' });
+            (e.target as HTMLFormElement).reset();
+        } catch (error) {
+            setStatus({ type: 'error', message: 'Something went wrong. Please try again later.' });
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
 
     return (
         <div className="min-h-screen bg-white py-16 px-4 md:px-8 flex items-center justify-center">
@@ -85,9 +120,13 @@ export default function ContactClient({ data }: { data: any }) {
                     transition={{ delay: 0.2 }}
                     className="bg-white p-8 rounded-2xl shadow-xl border border-slate-100"
                 >
-                    <form action="https://formsubmit.co/info.dharaneshk@gmail.com" method="POST" className="space-y-6">
-                        {/* <input type="hidden" name="_next" value="http://localhost:3000/thanks" /> - Removed for better compatibility across envs */}
-                        <input type="hidden" name="_captcha" value="false" />
+                    <form onSubmit={handleSubmit} className="space-y-6">
+
+                        {status.type && (
+                            <div className={`p-4 rounded-lg ${status.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                                {status.message}
+                            </div>
+                        )}
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
@@ -110,8 +149,8 @@ export default function ContactClient({ data }: { data: any }) {
                             <textarea name="message" required rows={4} className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-slate-50 text-slate-900" placeholder="The Purpose of contacting..."></textarea>
                         </div>
 
-                        <button type="submit" className="w-full py-4 bg-slate-900 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
-                            Send Message
+                        <button disabled={isSubmitting} type="submit" className="w-full py-4 bg-slate-900 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isSubmitting ? 'Sending...' : 'Send Message'}
                         </button>
                     </form>
                 </motion.div>

@@ -5,6 +5,14 @@ const AdminSchema = new Schema({
     password: { type: String, required: true },
 }, { timestamps: true });
 
+const ContactSchema = new Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    message: { type: String, required: true },
+    read: { type: Boolean, default: false },
+}, { timestamps: true });
+
 const PortfolioSchema = new Schema({
     personal: {
         name: String,
@@ -38,3 +46,4 @@ const PortfolioSchema = new Schema({
 
 export const Admin = models.Admin || model('Admin', AdminSchema);
 export const Portfolio = models.Portfolio || model('Portfolio', PortfolioSchema);
+export const Contact = models.Contact || model('Contact', ContactSchema);
